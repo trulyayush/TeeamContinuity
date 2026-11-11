@@ -17,6 +17,7 @@ import {
   FileText
 } from 'lucide-react';
 import { HandoverProject, DecisionRecord, OwnershipItem, DependencyItem, ProjectSource } from '../types';
+import { BusFactorDashboard } from './BusFactorDashboard';
 
 interface StageReconstructProps {
   project: HandoverProject;
@@ -29,7 +30,7 @@ export const StageReconstruct: React.FC<StageReconstructProps> = ({
   onInspectSource,
   onProceedToVerify,
 }) => {
-  const [activeTab, setActiveTab] = useState<'DECISIONS' | 'OWNERSHIP' | 'DEPENDENCIES'>('DECISIONS');
+  const [activeTab, setActiveTab] = useState<'DECISIONS' | 'OWNERSHIP' | 'DEPENDENCIES' | 'BUS_FACTOR'>('DECISIONS');
   const [selectedDependencyId, setSelectedDependencyId] = useState<string | null>(null);
 
   const findSource = (sourceId: string) => {
@@ -120,6 +121,21 @@ export const StageReconstruct: React.FC<StageReconstructProps> = ({
           >
             <Layers className="h-4 w-4" />
             <span>Interactive Dependency Graph ({project.dependencies.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('BUS_FACTOR')}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition cursor-pointer ${
+              activeTab === 'BUS_FACTOR'
+                ? 'bg-rose-500 text-zinc-950 shadow-md font-bold'
+                : 'bg-zinc-900 text-rose-400 hover:text-white border border-rose-500/30'
+            }`}
+          >
+            <ShieldAlert className="h-4 w-4" />
+            <span>Bus Factor Risk Matrix</span>
+            <span className="px-1.5 py-0.2 rounded bg-rose-500/20 text-rose-300 text-[10px] font-mono font-bold">
+              BF: 1.0 ⚠️
+            </span>
           </button>
         </div>
       </div>
@@ -227,6 +243,27 @@ export const StageReconstruct: React.FC<StageReconstructProps> = ({
             <div className="text-zinc-400 font-mono">
               Successor Assigned: <span className="text-amber-300 font-bold">{project.incomingSuccessor.name}</span>
             </div>
+          </div>
+
+          {/* Bus Factor Risk Alert Strip */}
+          <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2.5">
+              <ShieldAlert className="h-4 w-4 text-rose-400 shrink-0" />
+              <div>
+                <span className="font-bold text-rose-300">Single Point of Failure (SPOF) Alert:</span>
+                <span className="text-zinc-300 ml-1">
+                  Overall Project Bus Factor is <strong>1.0</strong>. {project.ownershipMap.filter(o => o.riskStatus === 'CRITICAL_RISK').length} subsystems are known solely by {project.departingMember.name}.
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setActiveTab('BUS_FACTOR')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500 hover:bg-rose-400 text-zinc-950 font-bold text-xs transition cursor-pointer shrink-0"
+            >
+              <span>Inspect Bus Factor Matrix</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -400,6 +437,14 @@ export const StageReconstruct: React.FC<StageReconstructProps> = ({
             </div>
           </div>
         </div>
+      )}
+
+      {/* TAB 4: BUS FACTOR RISK DASHBOARD */}
+      {activeTab === 'BUS_FACTOR' && (
+        <BusFactorDashboard
+          project={project}
+          onNavigateToStage={onProceedToVerify}
+        />
       )}
     </div>
   );

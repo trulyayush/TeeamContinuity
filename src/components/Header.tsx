@@ -5,7 +5,8 @@ import {
   Sparkles, 
   BookOpen, 
   CheckCircle2, 
-  AlertTriangle, 
+  AlertTriangle,
+  ShieldAlert, 
   UserCheck, 
   Briefcase, 
   Code, 
@@ -25,6 +26,7 @@ interface HeaderProps {
   onOpenDeckModal: () => void;
   onOpenChat: () => void;
   onOpenNewSourceModal: () => void;
+  onOpenBusFactor?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -36,6 +38,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenDeckModal,
   onOpenChat,
   onOpenNewSourceModal,
+  onOpenBusFactor,
 }) => {
   const getRoleLabel = (role: UserRole) => {
     switch (role) {
@@ -124,6 +127,18 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Recharts Donut Breakdown for Completeness Score */}
           <CompletenessDonut project={currentProject} />
+
+          {/* Quick Bus Factor Indicator Button */}
+          {onOpenBusFactor && (
+            <button
+              onClick={onOpenBusFactor}
+              className="hidden lg:flex items-center gap-1.5 rounded-xl border border-rose-500/30 bg-rose-500/10 px-2.5 py-1.5 text-xs font-semibold text-rose-300 hover:bg-rose-500/20 transition cursor-pointer"
+              title="Inspect Bus Factor Risk Matrix"
+            >
+              <ShieldAlert className="h-3.5 w-3.5 text-rose-400" />
+              <span className="font-mono">Bus Factor: 1.0</span>
+            </button>
+          )}
 
           {/* AI Project Memory Assistant button */}
           <button

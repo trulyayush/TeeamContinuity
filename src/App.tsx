@@ -15,6 +15,7 @@ import {
   ArrowRight, 
   CheckCircle2, 
   AlertTriangle,
+  ShieldAlert,
   Info,
   Clock,
   ExternalLink,
@@ -204,6 +205,7 @@ export default function App() {
         onOpenDeckModal={() => setIsDeckModalOpen(true)}
         onOpenChat={() => setIsChatOpen(true)}
         onOpenNewSourceModal={() => setIsNewSourceModalOpen(true)}
+        onOpenBusFactor={() => setActiveStage(2)}
       />
 
       {/* Main Content Area */}
@@ -244,10 +246,19 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <button
+              onClick={() => setActiveStage(2)}
+              className="flex items-center gap-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 px-3.5 py-2 text-xs font-semibold transition cursor-pointer"
+              title="Inspect Bus Factor Risk Matrix"
+            >
+              <ShieldAlert className="h-4 w-4 text-rose-400" />
+              <span>Bus Factor: 1.0 (Critical)</span>
+            </button>
+
             <button
               onClick={() => setIsTacitProbeModalOpen(true)}
-              className="flex items-center gap-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3.5 py-2 text-xs font-semibold transition cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3.5 py-2 text-xs font-semibold transition cursor-pointer"
             >
               <Sparkles className="h-4 w-4 text-amber-400" />
               <span>Probe Tacit Gotchas</span>
@@ -255,7 +266,7 @@ export default function App() {
 
             <button
               onClick={() => setIsChatOpen(true)}
-              className="flex items-center gap-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-3.5 py-2 text-xs font-medium transition cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 px-3.5 py-2 text-xs font-medium transition cursor-pointer"
             >
               <BookOpen className="h-4 w-4 text-zinc-400" />
               <span>Ask Project Memory</span>
