@@ -1,0 +1,6 @@
+{
+  "name": "ContinuityOS - Evidence-Backed Project Handover Platform",
+  "description": "Evidence-backed project knowledge reconstruction and continuity platform. Converts scattered project activity into verified handovers when team members move on.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
