@@ -14,6 +14,7 @@ import {
   FileText
 } from 'lucide-react';
 import { HandoverProject, UserRole } from '../types';
+import { CompletenessDonut } from './CompletenessDonut';
 
 interface HeaderProps {
   currentProject: HandoverProject;
@@ -48,12 +49,6 @@ export const Header: React.FC<HeaderProps> = ({
         return { label: 'Departing Member', icon: UserCheck, desc: 'Tacit knowledge debrief & handover checklist' };
     }
   };
-
-  const completeness = currentProject.completenessScore;
-  const scoreColor = completeness >= 85 ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10' :
-                     completeness >= 70 ? 'text-amber-400 border-amber-500/30 bg-amber-500/10' :
-                     'text-rose-400 border-rose-500/30 bg-rose-500/10';
-
   return (
     <header className="sticky top-0 z-40 border-b border-zinc-800/80 bg-[#0c0d12]/95 backdrop-blur-md">
       {/* Top utility row */}
@@ -127,16 +122,8 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
-          {/* Completeness Score Badge */}
-          <div className={`flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-semibold ${scoreColor}`}>
-            <span className="font-mono text-sm font-bold">{completeness}%</span>
-            <div className="hidden sm:block text-left text-[11px] leading-tight font-normal text-zinc-300">
-              <div>Handover Completeness</div>
-              <div className="text-[10px] text-zinc-400">
-                {currentProject.metrics.conflictsDetected > 0 ? `${currentProject.metrics.conflictsDetected} conflict flagged` : 'Zero conflicts'}
-              </div>
-            </div>
-          </div>
+          {/* Recharts Donut Breakdown for Completeness Score */}
+          <CompletenessDonut project={currentProject} />
 
           {/* AI Project Memory Assistant button */}
           <button
